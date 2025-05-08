@@ -8,30 +8,35 @@ const PORT = 3000;
 // Create MySQL connection
 const db = mysql.createConnection({
   host: 'localhost',      // or your DB host
-  user: 'your_username',
-  password: 'your_password',
-  database: 'your_database'
+  user: 'root',
+  password: '3343',
+  database: 'testdb'
 });
 
-// Connect to the database
-db.connect((err) => {
-  if (err) {
-    console.error('Error connecting to MySQL:', err);
-    return;
-  }
-  console.log('Connected to MySQL database!');
-});
+// Connecting to the db
+db.connect((err)=>{
+    if(err){
+        console.log(err);
+        return;
+    }
+    console.log('Connection has been created')
+})
+
+//Interacting with db
+const createQuery = 'create table Students(id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(20), email VARCHAR(20))'
+db.execute(createQuery,(err)=>{
+    if(err){
+        console.log(err);
+        db.end();
+        return;
+    }
+    console.log('Table is created')
+})
+
 
 // Example route
 app.get('/', (req, res) => {
-  db.query('SELECT * FROM your_table', (err, results) => {
-    if (err) {
-      console.error('Query error:', err);
-      res.status(500).send('Database error');
-    } else {
-      res.json(results);
-    }
-  });
+    res.send('Hello World!')
 });
 
 // Start the server
